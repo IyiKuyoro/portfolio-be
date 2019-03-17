@@ -7,5 +7,7 @@ namespace portfolio_data
         public string Title { get; set; }
         public string ImageUrl { get; set; }
         public string Link { get; set; }
+        public string CreatedAt { get; set; }
+        public string UpdatedAt { get; set; }
     }
 }
