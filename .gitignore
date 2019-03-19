@@ -52,6 +52,7 @@ artifacts/
 *.ilk
 *.meta
 *.obj
+**/obj
 *.pch
 *.pdb
 *.pgc
@@ -267,6 +268,5 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
-
 **/appsettings.json
 **/appsettings.Development.json
