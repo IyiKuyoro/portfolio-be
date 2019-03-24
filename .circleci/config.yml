@@ -1,0 +1,19 @@
+version: 2.0
+jobs:
+ build:
+   docker:
+     - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+   steps:
+     - checkout
+     - run:
+         name: Restore portfolio-API packages
+         command:
+           dotnet restore ".\portfolio-API\portfolio-API.csproj"
+     - run:
+         name: Restore portfolio-data packages
+         command:
+           dotnet restore ".\portfolio-data\portfolio-data.csproj"
+     - run:
+         name: Build the app
+         command:
+           dotnet build
