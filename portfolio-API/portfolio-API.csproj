@@ -12,8 +12,4 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\portfolio-data\portfolio-data.csproj" />
-  </ItemGroup>
-
 </Project>

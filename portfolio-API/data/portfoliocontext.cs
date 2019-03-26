@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace portfolio_data
+namespace portfolio_API
 {
     public class PortfolioContext : DbContext
     {
