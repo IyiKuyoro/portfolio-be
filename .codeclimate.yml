@@ -1,0 +1,4 @@
+exclude_patterns:
+  - '**/src/database/*'
+  - '**/*.spec.js'
+  - '**/__mocks__/'
