@@ -4,7 +4,12 @@
   "description": "The backend API of my portfolio site",
   "main": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clear && mkdir dist && babel src -d dist",
+    "clear": "rm -rf ./dist",
+    "dev": "nodemon",
+    "lint": "eslint --fix ./src",
+    "start": "node ./bin/prod",
+    "test": "npm run lint && jest"
   },
   "repository": {
     "type": "git",
@@ -15,5 +20,37 @@
   "bugs": {
     "url": "https://github.com/IyiKuyoro/portfolio-be/issues"
   },
-  "homepage": "https://github.com/IyiKuyoro/portfolio-be#readme"
+  "homepage": "https://github.com/IyiKuyoro/portfolio-be#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "jest": "^24.7.1",
+    "nodemon": "^1.18.11"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/register": "^7.4.0",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "pg": "^7.10.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^5.7.5",
+    "winston": "^3.2.1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.js",
+      "**/*.spec.js",
+      ".git"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "node ./bin/dev",
+    "ext": "js"
+  }
 }

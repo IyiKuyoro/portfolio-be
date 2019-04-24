@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "opeoluwaiyi-kuyoro",
+    "password": null,
+    "database": "portfolio",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "opeoluwaiyi-kuyoro",
+    "password": null,
+    "database": "portfolio-test",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "opeoluwaiyi-kuyoro",
+    "password": null,
+    "database": "portfolio-prod",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
