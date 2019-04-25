@@ -1,1 +1,2 @@
+require("../dist/scripts/createSuperAdmin.js");
 require("../dist/index.js");

@@ -4,12 +4,17 @@
   "description": "The backend API of my portfolio site",
   "main": "./src/index.js",
   "scripts": {
-    "build": "npm run clear && mkdir dist && babel src -d dist",
+    "build": "npm run clear && mkdir dist && babel src --ignore ./src/__tests__,./src/__mocks__ -d dist",
     "clear": "rm -rf ./dist",
-    "dev": "nodemon",
+    "createSA": "babel-node ./scripts/createSuperAdmin.js",
+    "dev": "NODE_ENV=development nodemon",
     "lint": "eslint --fix ./src",
-    "start": "node ./bin/prod",
-    "test": "npm run lint && jest"
+    "migrate": "sequelize db:migrate",
+    "rollback": "sequelize db:migrate:undo:all",
+    "rollmigrate": "npm run rollback && npm run migrate && npm run seed",
+    "seed": "sequelize db:seed:all",
+    "start": "NODE_ENV=production npm run migrate && NODE_ENV=production node ./bin/prod",
+    "test": "NODE_ENV=test npm run lint && NODE_ENV=test jest"
   },
   "repository": {
     "type": "git",
@@ -33,6 +38,7 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.4.0",
+    "bcrypt": "^3.0.6",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
