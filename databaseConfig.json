@@ -16,11 +16,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "opeoluwaiyi-kuyoro",
-    "password": null,
-    "database": "portfolio-prod",
-    "host": "127.0.0.1",
-    "port": 5432,
+    "use_env_variable": "PRODUCTION_DATABASE_URL",
     "dialect": "postgres"
   }
 }

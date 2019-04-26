@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue('password', bcrypt.hashSync(val, 10));
       },
     },
+    role: {
+      allowNull: false,
+      type: DataTypes.ENUM,
+      values: ['user', 'admin', 'super-admin'],
+      defaultValue: 'user',
+    },
   }, {});
   User.associate = () => {
     // associations can be defined here

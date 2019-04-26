@@ -12,6 +12,7 @@ const config = () => {
         SA_EMAIL: process.env.SA_EMAIL,
         SA_PASSWORD: process.env.SA_PASSWORD,
         SA_USERNAME: process.env.SA_USERNAME,
+        SECRET: process.env.SECRET,
       };
     }
     case 'production': {
@@ -20,6 +21,7 @@ const config = () => {
         SA_EMAIL: process.env.SA_EMAIL,
         SA_PASSWORD: process.env.SA_PASSWORD,
         SA_USERNAME: process.env.SA_USERNAME,
+        SECRET: process.env.SECRET,
       };
     }
     default: {
@@ -28,6 +30,7 @@ const config = () => {
         SA_EMAIL: process.env.SA_EMAIL,
         SA_PASSWORD: process.env.SA_PASSWORD,
         SA_USERNAME: process.env.SA_USERNAME,
+        SECRET: process.env.SECRET,
       };
     }
   }

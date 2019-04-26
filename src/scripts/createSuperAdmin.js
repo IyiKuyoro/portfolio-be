@@ -14,6 +14,7 @@ User.findOrCreate({
     email: config.SA_EMAIL,
     userName: config.SA_USERNAME,
     password: config.SA_PASSWORD,
+    role: 'super-admin',
   },
 })
   .then(() => {

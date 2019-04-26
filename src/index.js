@@ -1,14 +1,19 @@
 import express from 'express';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 import logger from './logger';
+import router from './routes';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false,
 }));
+app.use(cookieParser());
 app.use(morgan('dev'));
+
+app.use('/api/v1/', router);
 
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -24,3 +29,5 @@ app.listen(PORT, () => {
     message: `Server is running in http://localhost:${PORT}`,
   });
 });
+
+export default app;

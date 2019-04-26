@@ -3,6 +3,7 @@
 
 module.exports = {
   automock: false, // All imported modules in your tests should be mocked automatically
+  browser: false,
   clearMocks: true, // Automatically clear mock calls and instances between every test
   collectCoverage: true,
   collectCoverageFrom: [
@@ -48,7 +49,7 @@ module.exports = {
   testPathIgnorePatterns: [
     '\\\\node_modules\\\\',
   ],
-  transform: null, // A map from regular expressions to paths to transformers
+  transform: null,
   transformIgnorePatterns: [
     '\\\\node_modules\\\\',
   ],
