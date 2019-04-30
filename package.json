@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run clear && mkdir dist && babel src --ignore **/__tests__/**,**/__mocks__/** -d dist",
     "clear": "rm -rf ./dist",
-    "createSA": "babel-node ./scripts/createSuperAdmin.js",
+    "createSA": "babel-node ./src/scripts/createSuperAdmin.js",
     "dev": "NODE_ENV=development nodemon",
     "lint": "eslint --fix ./src",
     "migrate": "sequelize db:migrate",
@@ -14,7 +14,7 @@
     "rollmigrate": "npm run rollback && npm run migrate && npm run seed",
     "seed": "sequelize db:seed:all",
     "start": "NODE_ENV=production npm run migrate && NODE_ENV=production node ./bin/prod",
-    "test": "NODE_ENV=test npm run lint && NODE_ENV=test npm run rollback && NODE_ENV=test npm run migrate && NODE_ENV=test jest"
+    "test": "NODE_ENV=test npm run lint && NODE_ENV=test npm run rollback && NODE_ENV=test npm run migrate && NODE_ENV=test jest --detectOpenHandles"
   },
   "repository": {
     "type": "git",

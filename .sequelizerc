@@ -1,8 +1,24 @@
 const path = require('path');
+const dotenv = require('dotenv');
 
-module.exports = {
-  "config": path.resolve('.', 'databaseConfig.json'),
-  "models-path": path.resolve('./src/database/models'),
-  "seeders-path": path.resolve('./src//database/seeders'),
-  "migrations-path": path.resolve('./src/database/migrations')
-};
+dotenv.config();
+
+let sequelizeConfig = {};
+
+if (process.env.NODE_ENV === 'production') {
+  sequelizeConfig = {
+    config: path.resolve('.', 'databaseConfig.json'),
+    'models-path': path.resolve('./dist/database/models'),
+    'seeders-path': path.resolve('./dist/database/seeders'),
+    'migrations-path': path.resolve('./dist/database/migrations'),
+  };
+} else {
+  sequelizeConfig = {
+    config: path.resolve('.', 'databaseConfig.json'),
+    'models-path': path.resolve('./src/database/models'),
+    'seeders-path': path.resolve('./src/database/seeders'),
+    'migrations-path': path.resolve('./src/database/migrations'),
+  };
+}
+
+module.exports = sequelizeConfig;
