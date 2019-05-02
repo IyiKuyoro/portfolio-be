@@ -6,6 +6,7 @@
 
   ],
   "env": {
+    "PRODUCTION_DATABASE_URL": "postgres://jauzdyvg:6OoILNmZx-PA1JiWiG6ZfvvpCR0Yi-4_@manny.db.elephantsql.com:5432/jauzdyvg"
   },
   "formation": {
   },
