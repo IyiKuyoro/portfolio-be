@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@respondex/apierror": "^0.0.1",
-    "@respondex/core": "^0.1.0",
+    "@respondex/core": "^0.1.1",
     "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "dotenv": "^7.0.0",
@@ -54,6 +54,7 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.7.5",
     "sequelize-cli": "^5.4.0",
+    "uuid": "^3.3.2",
     "winston": "^3.2.1"
   },
   "nodemonConfig": {

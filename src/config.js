@@ -13,6 +13,7 @@ const config = () => {
         SA_PASSWORD: process.env.SA_PASSWORD,
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
+        URL: process.env.URL,
       };
     }
     case 'production': {
@@ -22,6 +23,7 @@ const config = () => {
         SA_PASSWORD: process.env.SA_PASSWORD,
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
+        URL: process.env.URL,
       };
     }
     default: {
@@ -31,6 +33,7 @@ const config = () => {
         SA_PASSWORD: process.env.SA_PASSWORD,
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
+        URL: process.env.URL,
       };
     }
   }
