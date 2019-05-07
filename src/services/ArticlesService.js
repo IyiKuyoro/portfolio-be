@@ -44,4 +44,17 @@ export default class ArticlesService {
       throw error;
     }
   }
+
+  static async findBySlug(slug) {
+    try {
+      return Article.findOne({
+        where: {
+          slug,
+        },
+      });
+    } catch (error) {
+      logger.log('error', error.message, error);
+      throw error;
+    }
+  }
 }

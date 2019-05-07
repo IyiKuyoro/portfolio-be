@@ -200,4 +200,60 @@ describe('ArticlesController', () => {
       });
     });
   });
+
+  describe('getArticle()', () => {
+    let res;
+    let status;
+    let json;
+
+    beforeEach(() => {
+      res = new ResMock();
+      status = jest.spyOn(res, 'status');
+      json = jest.spyOn(res, 'json');
+    });
+
+    it('should respond with a not found error when article is not found', async () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXX',
+        },
+      };
+      jest.spyOn(ArticlesService, 'findBySlug')
+        .mockImplementation(() => null);
+
+      await ArticlesController.getArticle(req, res);
+
+      expect(status).toHaveBeenCalledWith(404);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Article not found',
+        possibleCauses: [
+          'Perhaps the slug you provided is wrong',
+        ],
+      });
+    });
+
+    it('should article if found', async () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXX',
+        },
+      };
+      jest.spyOn(ArticlesService, 'findBySlug')
+        .mockImplementation(() => ({
+          title: 'title',
+        }));
+
+      await ArticlesController.getArticle(req, res);
+
+      expect(status).toHaveBeenCalledWith(200);
+      expect(json).toHaveBeenCalledWith({
+        success: true,
+        message: 'Article found',
+        data: {
+          title: 'title',
+        },
+      });
+    });
+  });
 });

@@ -2,7 +2,7 @@ import ResMock from '../../__mocks__/ResMock';
 import ArticlesMiddleware from '../ArticlesMiddleware';
 
 describe('ArticlesMiddleware', () => {
-  describe('validateParams', () => {
+  describe('validateParams()', () => {
     let res;
     let status;
     let json;
@@ -91,7 +91,7 @@ describe('ArticlesMiddleware', () => {
     });
   });
 
-  describe('validateValues', () => {
+  describe('validateValues()', () => {
     let res;
     let status;
     let json;
@@ -169,6 +169,51 @@ describe('ArticlesMiddleware', () => {
       const next = jest.fn();
 
       ArticlesMiddleware.validateValues(req, res, next);
+
+      expect(next).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('validateSlug()', () => {
+    let res;
+    let status;
+    let json;
+
+    beforeEach(() => {
+      res = new ResMock();
+      status = jest.spyOn(res, 'status');
+      json = jest.spyOn(res, 'json');
+    });
+
+    it('should validation error if slug is in the wrong format', () => {
+      const req = {
+        params: {
+          slug: 'title-=$@*:',
+        },
+      };
+      const next = jest.fn();
+
+      ArticlesMiddleware.validateSlug(req, res, next);
+
+      expect(status).toHaveBeenCalledWith(400);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Invalid url parameter',
+        possibleCauses: [
+          'The slug passed may be in the wrong format',
+        ],
+      });
+    });
+
+    it('should call next middleware', () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXXXX',
+        },
+      };
+      const next = jest.fn();
+
+      ArticlesMiddleware.validateSlug(req, res, next);
 
       expect(next).toHaveBeenCalledTimes(1);
     });
