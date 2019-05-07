@@ -38,7 +38,7 @@ export default class ArticlesService {
         limit: count,
         offset: (count * (page - 1)),
         order: [['id', 'DESC']],
-        attributes: ['id', 'title', 'slug', 'category', 'authors', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'title', 'slug', 'category', 'authors', 'imageUrl', 'link', 'external', 'createdAt', 'updatedAt'],
       });
     } catch (error) {
       logger.log('error', error.message, error);
@@ -86,6 +86,28 @@ export default class ArticlesService {
       }
 
       return updatedArticle[1][0].dataValues;
+    } catch (error) {
+      logger.log('error', error.message, error);
+      throw error;
+    }
+  }
+
+  static async deleteArticle(slug) {
+    try {
+      const article = await ArticlesService.findBySlug(slug);
+
+      if (article === null) {
+        throw new ApiError(
+          'Article not found',
+          [
+            'Perhaps the slug provided is wrong',
+            'Perhaps the article has been deleted',
+          ],
+          404,
+        );
+      }
+
+      await article.destroy();
     } catch (error) {
       logger.log('error', error.message, error);
       throw error;

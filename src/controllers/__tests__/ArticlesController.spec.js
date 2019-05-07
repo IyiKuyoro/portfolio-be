@@ -340,4 +340,65 @@ describe('ArticlesController', () => {
       });
     });
   });
+
+  describe('deleteArticle()', () => {
+    let res;
+    let status;
+    let json;
+
+    beforeEach(() => {
+      res = new ResMock();
+      status = jest.spyOn(res, 'status');
+      json = jest.spyOn(res, 'json');
+    });
+
+    it('should respond with 404 if the slug is wrong', async () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXX',
+        },
+      };
+      jest.spyOn(ArticlesService, 'deleteArticle')
+        .mockImplementation(async () => {
+          throw new ApiError(
+            'Article not found',
+            [
+              'Perhaps the slug provided is wrong',
+              'Perhaps the article has been deleted',
+            ],
+            404,
+          );
+        });
+
+      await ArticlesController.deleteArticle(req, res);
+
+      expect(status).toHaveBeenCalledWith(404);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Article not found',
+        possibleCauses: [
+          'Perhaps the slug provided is wrong',
+          'Perhaps the article has been deleted',
+        ],
+      });
+    });
+
+    it('should respond with 200 if the article is deleted', async () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXX',
+        },
+      };
+      jest.spyOn(ArticlesService, 'deleteArticle')
+        .mockImplementation(async () => true);
+
+      await ArticlesController.deleteArticle(req, res);
+
+      expect(status).toHaveBeenCalledWith(200);
+      expect(json).toHaveBeenCalledWith({
+        success: true,
+        message: 'Article deleted',
+      });
+    });
+  });
 });

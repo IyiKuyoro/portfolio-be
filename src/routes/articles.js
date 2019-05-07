@@ -44,7 +44,9 @@ articlesRouter.put(
 
 // Delete an article
 articlesRouter.delete(
-  '/',
+  '/:slug',
+  ArticlesMiddleware.validateSlug,
+  ArticlesController.deleteArticle,
 );
 
 export default articlesRouter;

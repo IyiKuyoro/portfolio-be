@@ -69,7 +69,7 @@ class Helper {
   }
 
   static validateTitle(errors, title) {
-    const regex = /^[ a-zA-Z0-9:!-]+$/;
+    const regex = /^[ a-zA-Z0-9:!'-]+$/;
 
     if (!regex.test(title)) {
       errors.push('Titles can only contain the following dataset: [ a-zA-Z0-9:!-]');
@@ -77,7 +77,7 @@ class Helper {
   }
 
   static validateAuthors(errors, authors) {
-    const regex = /^[ a-zA-Z'-,]+$/;
+    const regex = /^[ a-zA-Z',-]+$/;
 
     if (!regex.test(authors)) {
       errors.push('Authors can only contain the following dataset: [ a-zA-Z\'-,]');
