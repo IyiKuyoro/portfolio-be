@@ -1,5 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const Article = sequelize.define('Article', {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+    },
     uuid: {
       allowNull: false,
       type: DataTypes.UUID,

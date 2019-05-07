@@ -40,4 +40,33 @@ describe('ArticlesService', () => {
       });
     });
   });
+
+  describe('getArticles', () => {
+    it('should throw an error if one occurs.', async (done) => {
+      try {
+        jest.spyOn(Article, 'findAndCountAll')
+          .mockImplementation(() => {
+            throw new Error('Server error has occurred');
+          });
+
+        await ArticlesService.getArticles(1, 10);
+      } catch (error) {
+        expect(error.message).toEqual('Server error has occurred');
+        done();
+      }
+    });
+
+    it('should return the newly created data', async () => {
+      jest.spyOn(Article, 'findAndCountAll')
+        .mockImplementation(() => ([{
+          article: 'stuffStuff',
+        }]));
+
+      const article = await ArticlesService.getArticles(1, 10);
+
+      expect(article).toEqual([{
+        article: 'stuffStuff',
+      }]);
+    });
+  });
 });

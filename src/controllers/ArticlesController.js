@@ -38,4 +38,38 @@ export default class ArticlesController {
       RespondEx.error(error, res);
     }
   }
+
+  static async getArticles(req, res) {
+    try {
+      const { page } = req.query;
+      const articlesData = await ArticlesService.getArticles(page, req.query.count);
+      const { count, rows } = articlesData;
+
+      if (rows.length <= 0) {
+        return res.status(204).json({
+          success: true,
+          message: 'There are no articles on this page',
+        });
+      }
+
+      const totalPages = Math.ceil(count / req.query.count);
+      const resData = {
+        pageMeta: {
+          currentPage: +page,
+          totalPages,
+          currentCount: rows.length,
+          totalCounts: count,
+        },
+        articles: rows,
+      };
+
+      return RespondEx.successWithData(
+        'Articles successfully retrieved',
+        resData,
+        res,
+      );
+    } catch (error) {
+      return RespondEx.error(error, res);
+    }
+  }
 }
