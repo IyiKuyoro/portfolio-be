@@ -110,4 +110,28 @@ export default class ArticlesController {
       RespondEx.error(error, res);
     }
   }
+
+  static async updateArticle(req, res) {
+    try {
+      const updateArticle = await ArticlesService.updateArticle(req.params.slug, req.body);
+
+      RespondEx.successWithData(
+        'Article updated',
+        {
+          title: updateArticle.title,
+          authors: updateArticle.authors,
+          category: updateArticle.category,
+          body: updateArticle.body,
+          link: updateArticle.link,
+          external: updateArticle.external,
+          imageUrl: updateArticle.imageUrl,
+          createdAt: updateArticle.createdAt,
+          updatedAt: updateArticle.updatedAt,
+        },
+        res,
+      );
+    } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
 }

@@ -36,7 +36,10 @@ articlesRouter.post(
 
 // Edit an article
 articlesRouter.put(
-  '/',
+  '/:slug',
+  ArticlesMiddleware.validateSlug,
+  ArticlesMiddleware.validateUpdateParams,
+  ArticlesController.updateArticle,
 );
 
 // Delete an article

@@ -1,4 +1,5 @@
 import uuidv1 from 'uuid/v1';
+import ApiError from '@respondex/apierror';
 
 import logger from '../logger';
 import model from '../database/models';
@@ -52,6 +53,39 @@ export default class ArticlesService {
           slug,
         },
       });
+    } catch (error) {
+      logger.log('error', error.message, error);
+      throw error;
+    }
+  }
+
+  static async updateArticle(slug, data) {
+    try {
+      const updatedArticle = await Article.update(
+        {
+          ...data,
+          external: !data.body,
+        },
+        {
+          returning: true,
+          where: {
+            slug,
+          },
+        },
+      );
+
+      if (updatedArticle[0] <= 0) {
+        throw new ApiError(
+          'Article not found',
+          [
+            'Perhaps the slug provided is wrong',
+            'Perhaps the article has been deleted',
+          ],
+          404,
+        );
+      }
+
+      return updatedArticle[1][0].dataValues;
     } catch (error) {
       logger.log('error', error.message, error);
       throw error;
