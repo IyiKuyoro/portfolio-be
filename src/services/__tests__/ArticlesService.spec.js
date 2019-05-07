@@ -4,7 +4,7 @@ import ArticlesService from '../ArticlesService';
 const { Article } = model;
 
 describe('ArticlesService', () => {
-  describe('createArticle', () => {
+  describe('createArticle()', () => {
     it('should throw an error if one occurs.', async (done) => {
       try {
         jest.spyOn(Article, 'create')
@@ -41,7 +41,7 @@ describe('ArticlesService', () => {
     });
   });
 
-  describe('getArticles', () => {
+  describe('getArticles()', () => {
     it('should throw an error if one occurs.', async (done) => {
       try {
         jest.spyOn(Article, 'findAndCountAll')
@@ -63,6 +63,35 @@ describe('ArticlesService', () => {
         }]));
 
       const article = await ArticlesService.getArticles(1, 10);
+
+      expect(article).toEqual([{
+        article: 'stuffStuff',
+      }]);
+    });
+  });
+
+  describe('findBySlug()', () => {
+    it('should throw an error if one occurs.', async (done) => {
+      try {
+        jest.spyOn(Article, 'findOne')
+          .mockImplementation(() => {
+            throw new Error('Server error has occurred');
+          });
+
+        await ArticlesService.findBySlug('title-XXXXXXXXX');
+      } catch (error) {
+        expect(error.message).toEqual('Server error has occurred');
+        done();
+      }
+    });
+
+    it('should return an article', async () => {
+      jest.spyOn(Article, 'findOne')
+        .mockImplementation(() => ([{
+          article: 'stuffStuff',
+        }]));
+
+      const article = await ArticlesService.findBySlug('title-XXXXXXXXX');
 
       expect(article).toEqual([{
         article: 'stuffStuff',

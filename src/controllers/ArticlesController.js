@@ -1,4 +1,5 @@
 import RespondEx from '@respondex/core';
+import ApiError from '@respondex/apierror';
 
 import config from '../config';
 import ArticlesService from '../services/ArticlesService';
@@ -70,6 +71,43 @@ export default class ArticlesController {
       );
     } catch (error) {
       return RespondEx.error(error, res);
+    }
+  }
+
+  static async getArticle(req, res) {
+    try {
+      const article = await ArticlesService.findBySlug(req.params.slug);
+
+      if (article == null) {
+        throw new ApiError(
+          'Article not found',
+          [
+            'Perhaps the slug you provided is wrong',
+          ],
+          404,
+        );
+      }
+
+      const data = {
+        title: article.title,
+        authors: article.authors,
+        category: article.category,
+        body: article.body,
+        link: article.link,
+        slug: article.slug,
+        external: article.external,
+        imageUrl: article.imageUrl,
+        createdAt: article.createdAt,
+        updatedAt: article.updatedAt,
+      };
+
+      RespondEx.successWithData(
+        'Article found',
+        data,
+        res,
+      );
+    } catch (error) {
+      RespondEx.error(error, res);
     }
   }
 }

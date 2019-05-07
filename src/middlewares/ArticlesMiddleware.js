@@ -4,6 +4,20 @@ import RespondEx from '@respondex/core';
 import GeneralValidators from '../helpers/GeneralValidators';
 
 class Helper {
+  static validateSlug(slug) {
+    const regex = /^[a-zA-Z0-9:!-]+$/;
+
+    if (!regex.test(slug)) {
+      throw new ApiError(
+        'Invalid url parameter',
+        [
+          'The slug passed may be in the wrong format',
+        ],
+        400,
+      );
+    }
+  }
+
   static validateTitle(errors, title) {
     const regex = /^[ a-zA-Z0-9:!-]+$/;
 
@@ -89,6 +103,16 @@ export default class ArticlesMiddleware {
       if (errors.length > 0) {
         throw new ApiError('Invalid parameters', errors, 400);
       }
+
+      next();
+    } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
+
+  static validateSlug(req, res, next) {
+    try {
+      Helper.validateSlug(req.params.slug);
 
       next();
     } catch (error) {

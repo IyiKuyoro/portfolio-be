@@ -6,16 +6,18 @@ import GeneralMiddleware from '../middlewares/GeneralMiddleware';
 
 const articlesRouter = Router();
 
+// Get single article
+articlesRouter.get(
+  '/:slug',
+  ArticlesMiddleware.validateSlug,
+  ArticlesController.getArticle,
+);
+
 // Get all articles
 articlesRouter.get(
   '/',
   GeneralMiddleware.validatePaginationParams,
   ArticlesController.getArticles,
-);
-
-// Get single article
-articlesRouter.get(
-  '/:slug',
 );
 
 // Access middlewares
