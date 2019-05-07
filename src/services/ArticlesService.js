@@ -29,4 +29,19 @@ export default class ArticlesService {
       throw error;
     }
   }
+
+  static async getArticles(page, count) {
+    try {
+      return Article.findAndCountAll({
+        raw: true,
+        limit: count,
+        offset: (count * (page - 1)),
+        order: [['id', 'DESC']],
+        attributes: ['id', 'title', 'slug', 'category', 'authors', 'createdAt', 'updatedAt'],
+      });
+    } catch (error) {
+      logger.log('error', error.message, error);
+      throw error;
+    }
+  }
 }
