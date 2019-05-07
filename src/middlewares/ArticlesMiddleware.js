@@ -4,6 +4,56 @@ import RespondEx from '@respondex/core';
 import GeneralValidators from '../helpers/GeneralValidators';
 
 class Helper {
+  static checkPassedProperties(props, errors, req) {
+    props.forEach((prop) => {
+      switch (prop) {
+        case 'body':
+          Helper.validateBody(errors, req.body.body);
+          req.body.link = null;
+          break;
+        case 'title':
+          Helper.validateTitle(errors, req.body.title);
+          break;
+        case 'authors':
+          Helper.validateAuthors(errors, req.body.authors);
+          req.body.authors = req.body.authors.split(', ');
+          break;
+        case 'category':
+          Helper.validateCategory(errors, req.body.category);
+          break;
+        case 'imageUrl':
+          Helper.validateLink(errors, req.body.imageUrl, true);
+          break;
+        case 'link':
+          Helper.validateLink(errors, req.body.link);
+          req.body.body = null;
+          break;
+        case 'slug':
+          errors.push('slug cannot be updated');
+          break;
+        case 'id':
+          errors.push('id cannot be updated');
+          break;
+        case 'uuid':
+          errors.push('uuid cannot be updated');
+          break;
+        case 'external':
+          errors.push('external cannot be updated');
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  static checkForAtLeastOneProp(props) {
+    if (props.length <= 0) {
+      throw new ApiError('Incomplete request parameters', [
+        'You have to pass at least one parameter to be updated',
+      ], 400);
+    }
+  }
+
   static validateSlug(slug) {
     const regex = /^[a-zA-Z0-9:!-]+$/;
 
@@ -113,6 +163,38 @@ export default class ArticlesMiddleware {
   static validateSlug(req, res, next) {
     try {
       Helper.validateSlug(req.params.slug);
+
+      next();
+    } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
+
+  static validateUpdateParams(req, res, next) {
+    try {
+      const props = Object.keys(req.body);
+      const errors = [];
+
+      if (props.indexOf('body') >= 0 && props.indexOf('link') >= 0) {
+        throw new ApiError(
+          'Invalid request parameter',
+          [
+            'An article cannot have a body and link at the same time',
+          ],
+          400,
+        );
+      }
+
+      Helper.checkForAtLeastOneProp(props);
+      Helper.checkPassedProperties(props, errors, req);
+
+      if (errors.length > 0) {
+        throw new ApiError(
+          'Invalid request parameter',
+          errors,
+          400,
+        );
+      }
 
       next();
     } catch (error) {

@@ -1,3 +1,5 @@
+import ApiError from '@respondex/apierror';
+
 import ResMock from '../../__mocks__/ResMock';
 import ArticlesController from '../ArticlesController';
 import ArticlesService from '../../services/ArticlesService';
@@ -253,6 +255,88 @@ describe('ArticlesController', () => {
         data: {
           title: 'title',
         },
+      });
+    });
+  });
+
+  describe('updateArticle()', () => {
+    let res;
+    let status;
+    let json;
+
+    beforeEach(() => {
+      res = new ResMock();
+      status = jest.spyOn(res, 'status');
+      json = jest.spyOn(res, 'json');
+    });
+
+    it('should respond with the update article article', async () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXX',
+        },
+      };
+      jest.spyOn(ArticlesService, 'updateArticle')
+        .mockImplementation(async () => ({
+          title: 'title',
+          authors: ['authors'],
+          category: 'category',
+          body: 'body',
+          link: null,
+          external: false,
+          imageUrl: 'image',
+          createdAt: 'date',
+          updatedAt: 'date',
+        }));
+
+      await ArticlesController.updateArticle(req, res);
+
+      expect(status).toHaveBeenCalledWith(200);
+      expect(json).toHaveBeenCalledWith({
+        success: true,
+        message: 'Article updated',
+        data: {
+          title: 'title',
+          authors: ['authors'],
+          category: 'category',
+          body: 'body',
+          link: null,
+          external: false,
+          imageUrl: 'image',
+          createdAt: 'date',
+          updatedAt: 'date',
+        },
+      });
+    });
+
+    it('should respond with 404 if article is not found', async () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXX',
+        },
+      };
+      jest.spyOn(ArticlesService, 'updateArticle')
+        .mockImplementation(async () => {
+          throw new ApiError(
+            'Article not found',
+            [
+              'Perhaps the slug provided is wrong',
+              'Perhaps the article has been deleted',
+            ],
+            404,
+          );
+        });
+
+      await ArticlesController.updateArticle(req, res);
+
+      expect(status).toHaveBeenCalledWith(404);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Article not found',
+        possibleCauses: [
+          'Perhaps the slug provided is wrong',
+          'Perhaps the article has been deleted',
+        ],
       });
     });
   });

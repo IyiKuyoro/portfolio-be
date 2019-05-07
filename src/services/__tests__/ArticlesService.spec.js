@@ -98,4 +98,39 @@ describe('ArticlesService', () => {
       }]);
     });
   });
+
+  describe('updateArticle()', () => {
+    it('should throw an error if article is not found', async (done) => {
+      try {
+        jest.spyOn(Article, 'update')
+          .mockImplementation(async () => [0, []]);
+
+        await ArticlesService.updateArticle('title-XXXXXXXXX', {
+          title: 'title',
+          body: 'Body.',
+        });
+      } catch (error) {
+        expect(error.message).toEqual('Article not found');
+        done();
+      }
+    });
+
+    it('should return the updated article', async () => {
+      jest.spyOn(Article, 'update')
+        .mockImplementation(async () => [1, [{
+          dataValues: {
+            title: 'title',
+          },
+        }]]);
+
+      const updatedArticle = await ArticlesService.updateArticle('title-XXXXXXXXX', {
+        title: 'title',
+        body: 'Body.',
+      });
+
+      expect(updatedArticle).toEqual({
+        title: 'title',
+      });
+    });
+  });
 });

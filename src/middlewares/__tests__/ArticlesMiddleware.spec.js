@@ -218,4 +218,123 @@ describe('ArticlesMiddleware', () => {
       expect(next).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('validateUpdateParams()', () => {
+    let res;
+    let status;
+    let json;
+
+    beforeEach(() => {
+      res = new ResMock();
+      status = jest.spyOn(res, 'status');
+      json = jest.spyOn(res, 'json');
+    });
+
+    it('should respond with 400 if no parameters are passed', () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXXXX',
+        },
+        body: {},
+      };
+      const next = jest.fn();
+
+      ArticlesMiddleware.validateUpdateParams(req, res, next);
+
+      expect(status).toHaveBeenCalledWith(400);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Incomplete request parameters',
+        possibleCauses: [
+          'You have to pass at least one parameter to be updated',
+        ],
+      });
+    });
+
+    it('should call the next middleware', () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXXXX',
+        },
+        body: {
+          link: 'https://link.com',
+        },
+      };
+      const next = jest.fn();
+
+      ArticlesMiddleware.validateUpdateParams(req, res, next);
+
+      expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it('should respond with 400 if parameter is not valid', () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXXXX',
+        },
+        body: {
+          body: '=body*',
+          title: ')(',
+          authors: '#123',
+          category: 'user',
+          imageUrl: 'image',
+          slug: 'slug',
+          id: 'id',
+          uuid: 'uuid',
+          external: 'external',
+          default: 'default',
+        },
+      };
+      const next = jest.fn();
+
+      ArticlesMiddleware.validateUpdateParams(req, res, next);
+
+      expect(status).toHaveBeenCalledWith(400);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Invalid request parameter',
+        possibleCauses: [
+          'Article body must start with the following character set [a-zA-Z0-9]',
+          'Article body must end with the following character set [.!?]',
+          'Titles can only contain the following dataset: [ a-zA-Z0-9:!-]',
+          'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
+          'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
+          'Link must be a valid image url',
+          'slug cannot be updated',
+          'id cannot be updated',
+          'uuid cannot be updated',
+          'external cannot be updated',
+        ],
+      });
+    });
+
+    it('should respond with 400 if parameter is not valid', () => {
+      const req = {
+        params: {
+          slug: 'title-XXXXXXXXXX',
+        },
+        body: {
+          body: '=body*',
+          title: ')(',
+          authors: '#123',
+          category: 'user',
+          link: 'https://link.jpg',
+          imageUrl: 'image',
+          slug: 'slug',
+        },
+      };
+      const next = jest.fn();
+
+      ArticlesMiddleware.validateUpdateParams(req, res, next);
+
+      expect(status).toHaveBeenCalledWith(400);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'Invalid request parameter',
+        possibleCauses: [
+          'An article cannot have a body and link at the same time',
+        ],
+      });
+    });
+  });
 });
