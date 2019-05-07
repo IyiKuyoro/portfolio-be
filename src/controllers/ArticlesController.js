@@ -134,4 +134,17 @@ export default class ArticlesController {
       RespondEx.error(error, res);
     }
   }
+
+  static async deleteArticle(req, res) {
+    try {
+      await ArticlesService.deleteArticle(req.params.slug);
+
+      RespondEx.successWithoutData(
+        'Article deleted',
+        res,
+      );
+    } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
 }

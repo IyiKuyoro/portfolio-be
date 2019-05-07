@@ -10,7 +10,7 @@
     "SA_PASSWORD": "password",
     "SA_USERNAME": "SA",
     "SECRET": "secret",
-    "PRODUCTION_DATABASE_URL": "postgres://jauzdyvg:6OoILNmZx-PA1JiWiG6ZfvvpCR0Yi-4_@manny.db.elephantsql.com:5432/jauzdyvg"
+    "PRODUCTION_DATABASE_URL": "postgres://vlemhgwo:DX4MVL4Nm3q06uTZa0XI2ppKKwRNoeOC@isilo.db.elephantsql.com:5432/vlemhgwo"
   },
   "formation": {
   },

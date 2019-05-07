@@ -1,5 +1,6 @@
 import model from '../../database/models';
 import ArticlesService from '../ArticlesService';
+import logger from '../../logger';
 
 const { Article } = model;
 
@@ -131,6 +132,33 @@ describe('ArticlesService', () => {
       expect(updatedArticle).toEqual({
         title: 'title',
       });
+    });
+  });
+
+  describe('deleteArticle()', () => {
+    it('should throw a 404 error if article is not found', async (done) => {
+      try {
+        jest.spyOn(ArticlesService, 'findBySlug')
+          .mockImplementation(async () => null);
+
+        await ArticlesService.deleteArticle('title-XXXXXXXXX');
+      } catch (error) {
+        expect(error.message).toEqual('Article not found');
+        done();
+      }
+    });
+
+    it('should return the delete article', async () => {
+      jest.spyOn(ArticlesService, 'findBySlug')
+        .mockImplementation(async () => ({
+          destroy: () => {},
+        }));
+      jest.spyOn(logger, 'log')
+        .mockImplementation(async () => {});
+
+      await ArticlesService.deleteArticle('title-XXXXXXXXX');
+
+      expect(logger.log).toHaveBeenCalledTimes(0);
     });
   });
 });
