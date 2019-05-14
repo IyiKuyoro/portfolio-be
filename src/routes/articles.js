@@ -6,6 +6,12 @@ import GeneralMiddleware from '../middlewares/GeneralMiddleware';
 
 const articlesRouter = Router();
 
+// Get all medium articles
+articlesRouter.get(
+  '/medium',
+  ArticlesController.getMediumArticles,
+);
+
 // Get single article
 articlesRouter.get(
   '/:slug',
