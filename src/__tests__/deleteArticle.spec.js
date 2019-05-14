@@ -41,10 +41,9 @@ describe('', () => {
   it('should respond with 404 if article was not found', async (done) => {
     request(app)
       .delete('/api/v1/articles/slug')
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .expect('Content-Type', /json/)
       .expect(404, done);
   });
@@ -52,10 +51,9 @@ describe('', () => {
   it('should update the article', async (done) => {
     request(app)
       .delete(`/api/v1/articles/${article.slug}`)
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .expect('Content-Type', /json/)
       .expect(200, done);
   });

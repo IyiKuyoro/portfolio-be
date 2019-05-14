@@ -9,13 +9,11 @@ describe('UserController', () => {
     let res;
     let status;
     let json;
-    let cookie;
 
     beforeEach(() => {
       res = new ResMock();
       status = jest.spyOn(res, 'status');
       json = jest.spyOn(res, 'json');
-      cookie = jest.spyOn(res, 'cookie');
     });
 
     it('should respond with an authorization error when one occurs', async () => {
@@ -78,18 +76,7 @@ describe('UserController', () => {
 
       await UserController.signIn(req, res);
 
-      expect(cookie).toHaveBeenCalledTimes(1);
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({
-        success: true,
-        message: 'Signin successful',
-        data: {
-          email: 'email',
-          firstName: 'firstName',
-          lastName: 'lastName',
-          userName: 'userName',
-        },
-      });
     });
   });
 });

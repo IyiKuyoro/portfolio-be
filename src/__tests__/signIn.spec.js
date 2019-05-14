@@ -26,16 +26,7 @@ describe('signIn', () => {
         password: 'IAmATestUser',
       })
       .expect('Content-Type', /json/)
-      .expect(200, {
-        success: true,
-        message: 'Signin successful',
-        data: {
-          firstName: 'test',
-          lastName: 'user',
-          email: 'test.user@test.com',
-          userName: 'testUser',
-        },
-      }, done);
+      .expect(200, done);
   });
 
   afterAll(async () => {
