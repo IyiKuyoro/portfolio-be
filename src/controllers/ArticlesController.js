@@ -1,8 +1,10 @@
 import RespondEx from '@respondex/core';
 import ApiError from '@respondex/apierror';
+import feed from 'rss-to-json';
 
 import config from '../config';
 import ArticlesService from '../services/ArticlesService';
+import logger from '../logger';
 
 export default class ArticlesController {
   static async createArticle(req, res) {
@@ -144,6 +146,28 @@ export default class ArticlesController {
         res,
       );
     } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
+
+  static getMediumArticles(req, res) {
+    try {
+      feed.load(
+        'https://medium.com/feed/@iyikuyoro',
+        (error, response) => {
+          if (error) {
+            throw error;
+          }
+
+          RespondEx.successWithData(
+            'Articles found',
+            response.items,
+            res,
+          );
+        },
+      );
+    } catch (error) {
+      logger.log('error', error.message);
       RespondEx.error(error, res);
     }
   }

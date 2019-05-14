@@ -1,4 +1,5 @@
 import ApiError from '@respondex/apierror';
+import feed from 'rss-to-json';
 
 import ResMock from '../../__mocks__/ResMock';
 import ArticlesController from '../ArticlesController';
@@ -398,6 +399,58 @@ describe('ArticlesController', () => {
       expect(json).toHaveBeenCalledWith({
         success: true,
         message: 'Article deleted',
+      });
+    });
+  });
+
+  describe('getMediumArticles()', () => {
+    let res;
+    let status;
+    let json;
+
+    beforeEach(() => {
+      res = new ResMock();
+      status = jest.spyOn(res, 'status');
+      json = jest.spyOn(res, 'json');
+    });
+
+    it('should should respond with 500 if an error occurs', () => {
+      const req = {};
+      jest.spyOn(feed, 'load')
+        .mockImplementation((url, cb) => cb(new Error('Something went wrong')));
+
+      ArticlesController.getMediumArticles(req, res);
+
+      expect(status).toHaveBeenCalledWith(500);
+      expect(json).toHaveBeenCalledWith({
+        success: false,
+        message: 'A server error has occurred! Please contact the administrator',
+        possibleCauses: [
+          'This error is caused by a malfunction in this application',
+        ],
+      });
+    });
+
+    it('should should respond with articles', () => {
+      const req = {};
+      jest.spyOn(feed, 'load')
+        .mockImplementation((url, cb) => {
+          cb(null, {
+            items: [{
+              article: 'article',
+            }],
+          });
+        });
+
+      ArticlesController.getMediumArticles(req, res);
+
+      expect(status).toHaveBeenCalledWith(200);
+      expect(json).toHaveBeenCalledWith({
+        success: true,
+        message: 'Articles found',
+        data: [{
+          article: 'article',
+        }],
       });
     });
   });
