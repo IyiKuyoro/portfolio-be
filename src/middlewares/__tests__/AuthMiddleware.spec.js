@@ -62,8 +62,8 @@ describe('AuthMiddleware', () => {
 
     it('should respond with error if token is not valid', () => {
       const req = {
-        cookie: {
-          Authorization: 'XXXXXXXXXXXXXXXXXXX',
+        headers: {
+          authorization: 'Bearer XXXXXXXXXXXXXXXXXXX',
         },
       };
       const next = jest.fn();
@@ -82,10 +82,10 @@ describe('AuthMiddleware', () => {
 
     it('should call the next middleware if token is valid', () => {
       const req = {
-        cookies: {
-          Authorization: TokenHelper.generateToken({
+        headers: {
+          authorization: `Bearer ${TokenHelper.generateToken({
             user: 'user',
-          }, '1h'),
+          }, '1h')}`,
         },
       };
       const next = jest.fn();

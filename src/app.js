@@ -1,6 +1,5 @@
 import express from 'express';
 import morgan from 'morgan';
-import cookieParser from 'cookie-parser';
 import RespondEx from '@respondex/core';
 
 import router from './routes';
@@ -15,7 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: false,
 }));
-app.use(cookieParser());
 app.use(morgan('dev'));
 
 app.use('/api/v1/', router);

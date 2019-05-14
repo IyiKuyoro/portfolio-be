@@ -38,10 +38,9 @@ describe('CreateArticle', () => {
   it('should respond with an authorization error', (done) => {
     request(app)
       .post('/api/v1/articles')
-      .set(
-        'Cookie',
-        ['Authorization=XXXXXXXXX'],
-      )
+      .set({
+        authorization: 'AuthorizationXXXXXXXXX',
+      })
       .send()
       .expect('Content-Type', /json/)
       .expect(401, {
@@ -63,10 +62,9 @@ describe('CreateArticle', () => {
 
     request(app)
       .post('/api/v1/articles')
-      .set(
-        'Cookie',
-        [`Authorization=${token}`],
-      )
+      .set({
+        authorization: `Bearer ${token}`,
+      })
       .send()
       .expect('Content-Type', /json/)
       .expect(401, {
@@ -88,10 +86,9 @@ describe('CreateArticle', () => {
 
     request(app)
       .post('/api/v1/articles')
-      .set(
-        'Cookie',
-        [`Authorization=${token}`],
-      )
+      .set({
+        authorization: `Bearer ${token}`,
+      })
       .send()
       .expect('Content-Type', /json/)
       .expect(403, {
@@ -106,10 +103,9 @@ describe('CreateArticle', () => {
   it('should respond with incomplete parameters', (done) => {
     request(app)
       .post('/api/v1/articles')
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .send()
       .expect('Content-Type', /json/)
       .expect(400, {
@@ -127,10 +123,9 @@ describe('CreateArticle', () => {
   it('should respond with invalid data', (done) => {
     request(app)
       .post('/api/v1/articles')
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .send({
         title: '#*',
         authors: '\'1 = 1;!Josh, Mack@',
@@ -153,10 +148,9 @@ describe('CreateArticle', () => {
   it('should respond with invalid data', (done) => {
     request(app)
       .post('/api/v1/articles')
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .send({
         title: 'title',
         authors: '\'1 = 1;!Josh, Mack@',
@@ -178,10 +172,9 @@ describe('CreateArticle', () => {
   it('should create a new article', (done) => {
     request(app)
       .post('/api/v1/articles')
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .send({
         title: 'title',
         authors: 'author, author',

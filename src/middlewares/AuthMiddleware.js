@@ -37,7 +37,12 @@ export default class AuthMiddleware {
 
   static validateToken(req, res, next) {
     try {
-      req.userData = jwt.verify(req.cookies.Authorization, config.SECRET);
+      if (req.headers.authorization.indexOf('Bearer ') < 0) {
+        throw new Error();
+      }
+
+      const token = req.headers.authorization.replace('Bearer ', '');
+      req.userData = jwt.verify(token, config.SECRET);
 
       next();
     } catch (error) {

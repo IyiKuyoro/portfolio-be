@@ -17,8 +17,10 @@ export default class UserController {
           lastName: user.lastName,
           userName: user.userName,
         };
-        res.cookie('Authorization', TokenHelper.generateToken(data, '24h'), { maxAge: 900000, httpOnly: true });
-        RespondEx.successWithData('Signin successful', data, res);
+        RespondEx.successWithData('Signin successful', {
+          ...data,
+          token: TokenHelper.generateToken(data, '24h'),
+        }, res);
       } else {
         throw new ApiError('Authorization error',
           [

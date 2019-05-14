@@ -10,8 +10,4 @@ export default class ResMock {
   set() {
     return this;
   }
-
-  cookie() {
-    return this;
-  }
 }

@@ -41,10 +41,9 @@ describe('', () => {
   it('should update the article', async (done) => {
     request(app)
       .put(`/api/v1/articles/${article.slug}`)
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .send({
         body: 'New Body.',
       })
@@ -55,10 +54,9 @@ describe('', () => {
   it('should respond with 404 if article was not found', async (done) => {
     request(app)
       .put('/api/v1/articles/slug')
-      .set(
-        'Cookie',
-        [`Authorization=${adminToken}`],
-      )
+      .set({
+        authorization: `Bearer ${adminToken}`,
+      })
       .send({
         body: 'New Body.',
       })
