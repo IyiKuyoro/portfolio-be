@@ -140,9 +140,7 @@ export default class ArticlesMiddleware {
       Helper.validateTitle(errors, req.body.title);
       Helper.validateAuthors(errors, req.body.authors);
       Helper.validateCategory(errors, req.body.category);
-      if (req.body.body) {
-        Helper.validateBody(errors, req.body.body);
-      } else {
+      if (!req.body.body) {
         Helper.validateLink(errors, req.body.link);
       }
 
