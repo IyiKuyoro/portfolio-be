@@ -7,10 +7,6 @@ class Helper {
   static checkPassedProperties(props, errors, req) {
     props.forEach((prop) => {
       switch (prop) {
-        case 'body':
-          Helper.validateBody(errors, req.body.body);
-          req.body.link = null;
-          break;
         case 'title':
           Helper.validateTitle(errors, req.body.title);
           break;

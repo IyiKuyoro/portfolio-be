@@ -292,8 +292,6 @@ describe('ArticlesMiddleware', () => {
         success: false,
         message: 'Invalid request parameter',
         possibleCauses: [
-          'Article body must start with the following character set [a-zA-Z0-9]',
-          'Article body must end with the following character set [.!?]',
           'Titles can only contain the following dataset: [ a-zA-Z0-9:!-]',
           'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
           'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
