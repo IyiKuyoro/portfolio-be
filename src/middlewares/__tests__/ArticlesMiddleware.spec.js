@@ -124,7 +124,7 @@ describe('ArticlesMiddleware', () => {
           'Titles can only contain the following dataset: [ a-zA-Z0-9:!-]',
           'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
           'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
-          'Link must be a valid image url',
+          'Link must be a valid url',
         ],
       });
     });
@@ -295,7 +295,7 @@ describe('ArticlesMiddleware', () => {
           'Titles can only contain the following dataset: [ a-zA-Z0-9:!-]',
           'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
           'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
-          'Link must be a valid image url',
+          'Link must be a valid url',
           'slug cannot be updated',
           'id cannot be updated',
           'uuid cannot be updated',
