@@ -18,7 +18,7 @@ class Helper {
           Helper.validateCategory(errors, req.body.category);
           break;
         case 'imageUrl':
-          Helper.validateLink(errors, req.body.imageUrl, true);
+          Helper.validateLink(errors, req.body.imageUrl);
           break;
         case 'link':
           Helper.validateLink(errors, req.body.link);
@@ -65,7 +65,7 @@ class Helper {
   }
 
   static validateTitle(errors, title) {
-    const regex = /^[ a-zA-Z0-9:!'-]+$/;
+    const regex = /^[- .a-zA-Z0-9:!']+$/;
 
     if (!regex.test(title)) {
       errors.push('Titles can only contain the following dataset: [ a-zA-Z0-9:!-]');
@@ -97,15 +97,11 @@ class Helper {
     }
   }
 
-  static validateLink(errors, link, image = false) {
-    const regex = image ? /^http[s]?:\/\/.+\.(png||jpg||jpeg||gif)$/ : /^http[s]?:\/\/.+\.[\w]+$/;
+  static validateLink(errors, link) {
+    const regex = /^https:\/\/\S+$/;
 
     if (!regex.test(link)) {
-      if (image) {
-        errors.push('Link must be a valid image url');
-      } else {
-        errors.push('Link must be a valid url');
-      }
+      errors.push('Link must be a valid url');
     }
   }
 }
@@ -141,7 +137,7 @@ export default class ArticlesMiddleware {
       }
 
       if (req.body.imageUrl) {
-        Helper.validateLink(errors, req.body.imageUrl, true);
+        Helper.validateLink(errors, req.body.imageUrl);
       }
 
       if (errors.length > 0) {
