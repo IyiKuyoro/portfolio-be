@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+
+  node:
+    build:
+      context: .
+      dockerfile: .docker/node.dockerfile
+    ports:
+      - "8080:4000"
+    networks:
+      - portfolio-network
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - portfolio-network
+
+networks:
+  portfolio-network:
+    driver: bridge
