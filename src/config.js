@@ -14,6 +14,7 @@ const config = () => {
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
         URL: process.env.URL,
+        TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
       };
     }
     case 'production': {
@@ -24,6 +25,7 @@ const config = () => {
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
         URL: process.env.URL,
+        TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
       };
     }
     default: {
@@ -34,6 +36,7 @@ const config = () => {
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
         URL: process.env.URL,
+        TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
       };
     }
   }
