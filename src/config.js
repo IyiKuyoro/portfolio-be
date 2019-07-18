@@ -14,7 +14,11 @@ const config = () => {
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
         URL: process.env.URL,
+        TWITTER_API_ID: process.env.TWITTER_API_ID,
+        TWITTER_API_KEY: process.env.TWITTER_API_KEY,
         TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
+        TWITTER_ACCESS_TOKEN: process.env.TWITTER_ACCESS_TOKEN,
+        TWITTER_TOKEN_SECRETE: process.env.TWITTER_TOKEN_SECRETE,
       };
     }
     case 'production': {
@@ -25,7 +29,11 @@ const config = () => {
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
         URL: process.env.URL,
+        TWITTER_API_ID: process.env.TWITTER_API_ID,
+        TWITTER_API_KEY: process.env.TWITTER_API_KEY,
         TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
+        TWITTER_ACCESS_TOKEN: process.env.TWITTER_ACCESS_TOKEN,
+        TWITTER_TOKEN_SECRETE: process.env.TWITTER_TOKEN_SECRETE,
       };
     }
     default: {
@@ -36,7 +44,11 @@ const config = () => {
         SA_USERNAME: process.env.SA_USERNAME,
         SECRET: process.env.SECRET,
         URL: process.env.URL,
+        TWITTER_API_ID: process.env.TWITTER_API_ID,
+        TWITTER_API_KEY: process.env.TWITTER_API_KEY,
         TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
+        TWITTER_ACCESS_TOKEN: process.env.TWITTER_ACCESS_TOKEN,
+        TWITTER_TOKEN_SECRETE: process.env.TWITTER_TOKEN_SECRETE,
       };
     }
   }
