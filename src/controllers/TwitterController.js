@@ -1,4 +1,3 @@
-import axios from 'axios';
 import crypto from 'crypto';
 import uuid from 'uuid/v1';
 import encode from 'encode-3986';
@@ -6,8 +5,8 @@ import encode from 'encode-3986';
 import config from '../config';
 
 class Helper {
-  static generateAuthString(method, baseUrl, parameter, oauthParams) {
-    const signature = this.generateSignature(method, baseUrl, parameter, oauthParams);
+  static generateAuthString(method, baseUrl, oauthParams) {
+    const signature = this.generateSignature(method, baseUrl, oauthParams);
     const completeOAuthParams = {
       oauth_consumer_key: oauthParams.oauth_consumer_key,
       oauth_nonce: oauthParams.oauth_nonce,
@@ -28,17 +27,17 @@ class Helper {
     return authString;
   }
 
-  static generateSignature(method, baseUrl, parameter, oauthParams) {
+  static generateSignature(method, baseUrl, parameters) {
     const methodCapitalized = method.toUpperCase();
 
-    const params = Object.keys(oauthParams);
+    const params = Object.keys(parameters);
     const sortedParams = params.sort();
 
     let parameterString = '';
     sortedParams.forEach((param) => {
-      parameterString += `${encode(param)}=${encode(oauthParams[param])}&`;
+      parameterString += `${encode(param)}=${encode(parameters[param])}&`;
     });
-    parameterString += `${encode('url')}=${encode(parameter)}`;
+    parameterString = parameterString.replace(/&$/, '');
 
     const signatureBaseString = `${methodCapitalized}&${encode(baseUrl)}&${encode(parameterString)}`;
     const signingKey = `${encode(config.TWITTER_API_SECRETE_KEY)}&${encode(config.TWITTER_TOKEN_SECRETE)}`;
@@ -47,49 +46,77 @@ class Helper {
 
     return hmac.digest('base64');
   }
+
+  static generateParamsObject(oauth1Params, urlParams) {
+    const oauthParamKeys = Object.keys(oauth1Params);
+    const urlParamsKeys = Object.keys(urlParams);
+
+    const unifiedParamKeys = [...oauthParamKeys, ...urlParamsKeys];
+    unifiedParamKeys.sort();
+
+    const paramsObject = {};
+    unifiedParamKeys.forEach((param) => {
+      if (param !== 'twitterEndpoint' && param !== 'method') {
+        if (oauth1Params[param]) {
+          paramsObject[param] = oauth1Params[param];
+        } else if (urlParams[param]) {
+          paramsObject[param] = urlParams[param];
+        }
+      }
+    });
+
+    return paramsObject;
+  }
+
+  static generateTwitterUrl(endpoint, paramsObject) {
+    const paramsKey = Object.keys(paramsObject);
+    let urlString = `${endpoint}?`;
+
+    paramsKey.forEach((param) => {
+      if (param !== 'twitterEndpoint' && param !== 'method') {
+        urlString += `${param}=${encode(paramsObject[param])},`;
+      }
+    });
+    urlString = urlString.replace(/,$/, '');
+
+    return urlString;
+  }
 }
 
 export default class TwitterController {
-  static async addWebhook(req, res) {
-    const webhookUrl = encodeURI(req.body.url);
-    let once = uuid();
-    once = once.replace(/-/gi, '');
+  static logActivity(req, res) {
+    console.log();
+    console.log(req.body);
+    console.log();
+    res.status(200).json({});
+  }
 
-    const oauth1Params = {
-      oauth_consumer_key: config.TWITTER_API_KEY,
-      oauth_nonce: once,
-      oauth_signature_method: 'HMAC-SHA1',
-      oauth_timestamp: Math.floor(Date.now() / 1000),
-      oauth_token: config.TWITTER_ACCESS_TOKEN,
-      oauth_version: '1.0',
-    };
-
-    const auth = Helper.generateAuthString(
-      'POST',
-      'https://api.twitter.com/1.1/account_activity/all/prod/webhooks.json',
-      webhookUrl,
-      oauth1Params,
-    );
-
+  static generateRequest(req, res) {
     try {
-      const response = await axios.get(
-        `https://api.twitter.com/1.1/account_activity/all/prod/webhooks.json?url=${webhookUrl}`,
-        {
-          headers: {
-            Authorization: auth,
-          },
-        },
+      let once = uuid();
+      once = once.replace(/-/gi, '');
+
+      const oauth1Params = {
+        oauth_consumer_key: config.TWITTER_API_KEY,
+        oauth_nonce: once,
+        oauth_signature_method: 'HMAC-SHA1',
+        oauth_timestamp: Math.floor(Date.now() / 1000),
+        oauth_token: config.TWITTER_ACCESS_TOKEN,
+        oauth_version: '1.0',
+      };
+
+      const params = Helper.generateParamsObject(oauth1Params, req.body);
+      const twitterUrl = Helper.generateTwitterUrl(req.body.twitterEndpoint, req.body);
+
+      const auth = Helper.generateAuthString(
+        req.body.method,
+        req.body.twitterEndpoint,
+        params,
       );
 
-      console.log();
-      console.log(response.response.data);
-      res.status(500).json(response.response.data);
-      console.log();
+      res.status(200).send(`curl --request ${req.body.method.toUpperCase()} --url '${twitterUrl}' --header 'authorization: ${auth}'`);
     } catch (error) {
-      console.log();
-      console.log(error.response.data);
-      res.status(500).json(error.response.data);
-      console.log();
+      res.status(500).send('Error');
     }
   }
 }
