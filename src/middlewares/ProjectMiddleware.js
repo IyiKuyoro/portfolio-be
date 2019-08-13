@@ -62,20 +62,64 @@ export default class ProjectMiddleware {
   static validateProjectParams(req, res, next) {
     try {
       const missingParamsError = GeneralValidators.validateProps(req.body, 'title', 'language', 'description', 'link', 'host');
+      const extraProps = GeneralValidators.findIncludedProps(req.body, 'title', 'language', 'description', 'link', 'host');
 
-      if (missingParamsError.length > 0) {
-        throw new ApiError('Some parameters are missing', missingParamsError, 400);
+      if ([...missingParamsError, ...extraProps].length > 0) {
+        throw new ApiError(
+          'Error in request body',
+          [...missingParamsError, ...extraProps],
+          400,
+        );
       }
 
       const validityErrors = Helper.checkPropertyStrings(req.body);
 
       if (validityErrors.length > 0) {
-        throw new ApiError('Some parameters are missing', validityErrors, 400);
+        throw new ApiError('Error in some parameters', validityErrors, 400);
       }
 
       next();
     } catch (error) {
       logger.error(error);
+      RespondEx.error(error, res);
+    }
+  }
+
+  static validateEditProjectParams(req, res, next) {
+    try {
+      const extraProps = GeneralValidators.findIncludedProps(req.body, 'title', 'language', 'description', 'link', 'host');
+
+      if (extraProps.length > 0) {
+        throw new ApiError(
+          'Errors found in request body',
+          extraProps,
+          400,
+        );
+      }
+
+      if (Object.keys(req.body).length <= 0) {
+        throw new ApiError(
+          'At least one valid parameter must be edited',
+          400,
+        );
+      }
+
+      next();
+    } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
+
+  static validatePassedParameters(req, res, next) {
+    try {
+      const validityErrors = Helper.checkPropertyStrings(req.body);
+
+      if (validityErrors.length > 0) {
+        throw new ApiError('Error in some parameters', validityErrors, 400);
+      }
+
+      next();
+    } catch (error) {
       RespondEx.error(error, res);
     }
   }

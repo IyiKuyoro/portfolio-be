@@ -19,4 +19,12 @@ projectRouter.post(
   ProjectController.addProject,
 );
 
+// Add new project
+projectRouter.put(
+  '/:id',
+  ProjectMiddleware.validateEditProjectParams,
+  ProjectMiddleware.validatePassedParameters,
+  ProjectController.editProject,
+);
+
 export default projectRouter;
