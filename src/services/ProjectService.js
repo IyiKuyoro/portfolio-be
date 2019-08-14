@@ -58,4 +58,25 @@ export default class ProjectService {
 
     return projects;
   }
+
+  static async deleteProject(id) {
+    const proj = await Project.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!proj) {
+      throw new ApiError(
+        'Project not found',
+        [
+          'Perhaps the project has already been deleted',
+          'Perhaps the id provided is wrong',
+        ],
+        404,
+      );
+    }
+
+    await proj.destroy();
+  }
 }

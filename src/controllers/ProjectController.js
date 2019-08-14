@@ -45,6 +45,18 @@ export default class ProjectController {
 
       RespondEx.successWithData('Success acquiring all projects', projects, res);
     } catch (error) {
+      logger.log('error', error.message);
+      RespondEx.error(error, res);
+    }
+  }
+
+  static async deleteProject(req, res) {
+    try {
+      await ProjectService.deleteProject(req.params.id);
+
+      res.status(204).json();
+    } catch (error) {
+      logger.log('error', error.message);
       RespondEx.error(error, res);
     }
   }
