@@ -38,4 +38,14 @@ export default class ProjectController {
       RespondEx.error(error, res);
     }
   }
+
+  static async getProjects(req, res) {
+    try {
+      const projects = await ProjectService.getAllProjects();
+
+      RespondEx.successWithData('Success acquiring all projects', projects, res);
+    } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
 }

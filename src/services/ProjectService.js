@@ -52,4 +52,10 @@ export default class ProjectService {
 
     return updatedProject[1][0].dataValues;
   }
+
+  static async getAllProjects() {
+    const projects = await Project.findAll();
+
+    return projects;
+  }
 }
