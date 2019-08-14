@@ -27,4 +27,15 @@ export default class ProjectController {
       RespondEx.error(error, res);
     }
   }
+
+  static async editProject(req, res) {
+    try {
+      const editedProject = await ProjectService.editProject(req.params.id, req.body);
+
+      RespondEx.successWithData('Project successfully edited', editedProject, res);
+    } catch (error) {
+      logger.log('error', error.message, error);
+      RespondEx.error(error, res);
+    }
+  }
 }
