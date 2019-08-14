@@ -28,9 +28,17 @@ projectRouter.post(
 // Add new project
 projectRouter.put(
   '/:id',
+  ProjectMiddleware.validateProjectId,
   ProjectMiddleware.validateEditProjectParams,
   ProjectMiddleware.validatePassedParameters,
   ProjectController.editProject,
+);
+
+// Add new project
+projectRouter.delete(
+  '/:id',
+  ProjectMiddleware.validateProjectId,
+  ProjectController.deleteProject,
 );
 
 export default projectRouter;

@@ -123,4 +123,22 @@ export default class ProjectMiddleware {
       RespondEx.error(error, res);
     }
   }
+
+  static validateProjectId(req, res, next) {
+    try {
+      const digitRegex = /^[1-9]+[0-9]*$/;
+
+      if (!digitRegex.test(req.params.id)) {
+        throw new ApiError(
+          'Project id must me a positive integer',
+          [' Passed an invalid digit in the request url'],
+          400,
+        );
+      }
+
+      next();
+    } catch (error) {
+      RespondEx.error(error, res);
+    }
+  }
 }
