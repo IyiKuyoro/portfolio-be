@@ -9,10 +9,10 @@ class Helper {
    * @description validate the strings
    */
   static validateString(param, name) {
-    const regex = /^[^+=@'!$#&*%<>""]+$/;
+    const regex = /^[^+=@'!$&*%<>""]+$/;
 
     if (!regex.test(param)) {
-      return `${name} cannot contain these set of characters +=@'!$#&*%<>`;
+      return `${name} cannot contain these set of characters +=@'!$&*%<>`;
     }
 
     return '';
