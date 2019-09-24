@@ -85,9 +85,6 @@ class Helper {
 
 export default class TwitterController {
   static logActivity(req, res) {
-    console.log();
-    console.log(req.body);
-    console.log();
     res.status(200).json({});
   }
 
