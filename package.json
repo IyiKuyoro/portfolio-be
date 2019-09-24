@@ -4,7 +4,7 @@
   "description": "The backend API of my portfolio site",
   "main": "./src/index.js",
   "scripts": {
-    "build": "npm run clear && mkdir dist && babel src --ignore **/__tests__/**,**/__mocks__/** -d dist",
+    "build": "npm run clear && mkdir dist && babel src --copy-files -d dist",
     "clear": "rm -rf ./dist",
     "createSA": "babel-node ./src/scripts/createSuperAdmin.js",
     "dev": "NODE_ENV=development nodemon",
