@@ -33,12 +33,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # Build the app
-      - run:
-          name: Build the app
-          command:
-            npm run build
-
       # run tests and post coverage to cc
       - run:
           name: Run tests
@@ -46,3 +40,9 @@ jobs:
             ./cc-test-reporter before-build
             npm test
             ./cc-test-reporter after-build --exit-code $?
+
+      # Build the app
+      - run:
+          name: Build the app
+          command:
+            npm run build
