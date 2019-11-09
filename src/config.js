@@ -19,6 +19,9 @@ const config = () => {
         TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
         TWITTER_ACCESS_TOKEN: process.env.TWITTER_ACCESS_TOKEN,
         TWITTER_TOKEN_SECRETE: process.env.TWITTER_TOKEN_SECRETE,
+        CLOUDINARY_CLOUDNAME: 'cloudname',
+        CLOUDINARY_API_KEY: 'cloudinary api key',
+        CLOUDINARY_API_SECRETE: 'cloudinary api secrete',
       };
     }
     case 'production': {
@@ -34,6 +37,9 @@ const config = () => {
         TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
         TWITTER_ACCESS_TOKEN: process.env.TWITTER_ACCESS_TOKEN,
         TWITTER_TOKEN_SECRETE: process.env.TWITTER_TOKEN_SECRETE,
+        CLOUDINARY_CLOUDNAME: process.env.CLOUDINARY_CLOUDNAME,
+        CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+        CLOUDINARY_API_SECRETE: process.env.CLOUDINARY_API_SECRETE,
       };
     }
     default: {
@@ -49,6 +55,9 @@ const config = () => {
         TWITTER_API_SECRETE_KEY: process.env.TWITTER_API_SECRETE_KEY,
         TWITTER_ACCESS_TOKEN: process.env.TWITTER_ACCESS_TOKEN,
         TWITTER_TOKEN_SECRETE: process.env.TWITTER_TOKEN_SECRETE,
+        CLOUDINARY_CLOUDNAME: process.env.CLOUDINARY_CLOUDNAME,
+        CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+        CLOUDINARY_API_SECRETE: process.env.CLOUDINARY_API_SECRETE,
       };
     }
   }
