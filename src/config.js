@@ -22,6 +22,7 @@ const config = () => {
         CLOUDINARY_CLOUDNAME: 'cloudname',
         CLOUDINARY_API_KEY: 'cloudinary api key',
         CLOUDINARY_API_SECRETE: 'cloudinary api secrete',
+        CLOUDINARY_FOLDER: 'example',
       };
     }
     case 'production': {
@@ -40,6 +41,7 @@ const config = () => {
         CLOUDINARY_CLOUDNAME: process.env.CLOUDINARY_CLOUDNAME,
         CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
         CLOUDINARY_API_SECRETE: process.env.CLOUDINARY_API_SECRETE,
+        CLOUDINARY_FOLDER: process.env.CLOUDINARY_FOLDER,
       };
     }
     default: {
@@ -58,6 +60,7 @@ const config = () => {
         CLOUDINARY_CLOUDNAME: process.env.CLOUDINARY_CLOUDNAME,
         CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
         CLOUDINARY_API_SECRETE: process.env.CLOUDINARY_API_SECRETE,
+        CLOUDINARY_FOLDER: process.env.CLOUDINARY_FOLDER,
       };
     }
   }

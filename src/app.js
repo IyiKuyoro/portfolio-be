@@ -2,7 +2,6 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import RespondEx from '@respondex/core';
-import multer from 'multer';
 
 import router from './routes';
 
@@ -17,9 +16,6 @@ app.use(express.urlencoded({
   extended: false,
 }));
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage }).single('image');
-app.use(upload);
 app.use(express.static('public'));
 app.use(morgan('dev'));
 

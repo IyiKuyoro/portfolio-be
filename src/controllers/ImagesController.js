@@ -16,7 +16,7 @@ export default class ImagesController {
         req.file.content,
         {
           public_id: req.body.fileName,
-          folder: 'example',
+          folder: config.CLOUDINARY_FOLDER,
           resource_type: 'image',
         },
         (error, result) => {
