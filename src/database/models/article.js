@@ -46,8 +46,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
     },
   }, {});
-  Article.associate = () => {
-    // associations can be defined here
+  Article.associate = (models) => {
+    Article.belongsToMany(models.User,
+      {
+        as: 'authors',
+        through: 'ArticleAuthor',
+        foreignKey: 'articleId',
+      });
   };
   return Article;
 };

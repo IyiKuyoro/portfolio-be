@@ -37,8 +37,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'user',
     },
   }, {});
-  User.associate = () => {
-    // associations can be defined here
+  User.associate = (models) => {
+    User.belongsToMany(models.Article,
+      {
+        as: 'articles',
+        through: 'ArticleAuthor',
+        foreignKey: 'authorId',
+      });
   };
   return User;
 };
