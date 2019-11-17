@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
     },
-    authors: {
-      allowNull: false,
-      type: DataTypes.ARRAY(DataTypes.STRING),
-    },
     category: {
       allowNull: false,
       type: DataTypes.ENUM,
@@ -49,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
   Article.associate = (models) => {
     Article.belongsToMany(models.User,
       {
-        as: 'authors',
+        as: 'allAuthors',
         through: 'ArticleAuthor',
         foreignKey: 'articleId',
       });

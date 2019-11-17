@@ -4,6 +4,7 @@ import feed from 'rss-to-json';
 
 import config from '../config';
 import ArticlesService from '../services/ArticlesService';
+import ArticleAuthorService from '../services/ArticleAuthorService';
 import logger from '../logger';
 
 export default class ArticlesController {
@@ -19,6 +20,12 @@ export default class ArticlesController {
         link: req.body.link,
         body: req.body.body,
         external: req.body.external,
+        allAuthors: req.userData.id,
+      });
+
+      await ArticleAuthorService.createArticleAuthor({
+        articleId: article.id,
+        authorId: req.userData.id,
       });
 
       RespondEx.createdResource(
@@ -90,9 +97,11 @@ export default class ArticlesController {
         );
       }
 
+      const authors = article.allAuthors.map(authorData => `${authorData.firstName} ${authorData.lastName}`);
+      const authorsIds = article.allAuthors.map(authorData => authorData.id);
+
       const data = {
         title: article.title,
-        authors: article.authors,
         category: article.category,
         body: article.body,
         link: article.link,
@@ -101,6 +110,8 @@ export default class ArticlesController {
         imageUrl: article.imageUrl,
         createdAt: article.createdAt,
         updatedAt: article.updatedAt,
+        authors,
+        authorsIds,
       };
 
       RespondEx.successWithData(
