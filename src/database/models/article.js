@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING,
     },
+    imagePublicId: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
     link: {
       allowNull: true,
       type: DataTypes.STRING,
