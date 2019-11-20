@@ -13,6 +13,18 @@ cmd_attache_working_dir: &cmd_attache_working_dir
   attach_workspace:
     at: ~/repo
 
+cmd_restore_cache: &cmd_restore_cache
+  restore_cache:
+    keys:
+      - v1-dependencies-{{ checksum "package.json" }}
+      - v1-dependencies-
+
+cmd_save_cache: &cmd_save_cache
+  save_cache:
+    paths:
+      - node_modules
+    key: v1-dependencies-{{ checksum "package.json" }}
+
 cmd_install_packages: &cmd_install_packages
   run:
     name: Install dependencies
@@ -102,17 +114,18 @@ jobs:
             chmod u+x scripts/heroku_deployment.sh
             scripts/heroku_deployment.sh
 
-workflows;
+workflows:
   version: 2
   test_deploy:
     jobs:
       - checkout_code
-      - cc_reporter:
+      - cc_reported:
           requires:
             - checkout_code
       - test:
           requires:
             - checkout_code
+            - cc_reported
       - build:
           requires:
             - checkout_code
