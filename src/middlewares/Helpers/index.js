@@ -97,7 +97,7 @@ export default class Helper {
   static validateLink(errors, link) {
     const regex = /^https?:\/\/\S+$/;
 
-    if (!regex.test(link)) {
+    if (link && !regex.test(link)) {
       errors.push('Link must be a valid url');
     }
   }

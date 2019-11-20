@@ -1,6 +1,7 @@
 import uuidv1 from 'uuid/v1';
 import ApiError from '@respondex/apierror';
 
+import ArticleAuthorService from './ArticleAuthorService';
 import logger from '../logger';
 import model from '../database/models';
 
@@ -18,12 +19,19 @@ export default class ArticlesService {
         category: articleParams.category,
         slug: `${hyphenatedName}-${uuid}`,
         imageUrl: articleParams.imageUrl || null,
+        imagePublicId: articleParams.imagePublicId || null,
         link: articleParams.link || null,
         body: articleParams.body || null,
         external: !articleParams.body,
       });
 
-      return articleRecord;
+      await ArticleAuthorService.createArticleAuthor({
+        articleId: articleRecord.id,
+        authorId: articleParams.authorId,
+      });
+
+      const article = await ArticlesService.findBySlug(articleRecord.slug);
+      return article;
     } catch (error) {
       logger.log('error', error.message, error);
       throw error;
