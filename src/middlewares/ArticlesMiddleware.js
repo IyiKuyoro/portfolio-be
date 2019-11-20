@@ -7,7 +7,7 @@ import Helper from './Helpers';
 export default class ArticlesMiddleware {
   static validateParams(req, res, next) {
     try {
-      const errors = GeneralValidators.validateProps(req.body, 'title', 'authors', 'category');
+      const errors = GeneralValidators.validateProps(req.body, 'title', 'category');
       if ((!req.body.body && !req.body.link)
         || (req.body.body && req.body.link)) {
         errors.push('body or link not both should be provided');
@@ -28,7 +28,6 @@ export default class ArticlesMiddleware {
       const errors = [];
 
       Helper.validateTitle(errors, req.body.title);
-      Helper.validateAuthors(errors, req.body.authors);
       Helper.validateCategory(errors, req.body.category);
       if (!req.body.body) {
         Helper.validateLink(errors, req.body.link);
@@ -36,6 +35,7 @@ export default class ArticlesMiddleware {
 
       if (req.body.imageUrl) {
         Helper.validateLink(errors, req.body.imageUrl);
+        errors.push(...GeneralValidators.validateProps(req.body, 'imagePublicId'));
       }
 
       if (errors.length > 0) {
