@@ -12,6 +12,6 @@ fi
 # Login to heroku, pull the database URL and run migrations
 chmod u+x scripts/heroku_login.sh
 scripts/heroku_login.sh
-export DATABASE_URL=$(heroku config:get DATABASE_URL -a ${HEROKU_APP_NAME})
+export PRODUCTION_DATABASE_URL=$(heroku config:get PRODUCTION_DATABASE_URL -a ${HEROKU_APP_NAME})
 
 NODE_ENV=production npm run migrate

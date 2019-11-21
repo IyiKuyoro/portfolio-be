@@ -130,16 +130,15 @@ workflows:
           requires:
             - checkout_code
             - test
-      - migrate_db:
-          requires:
-            - checkout_code
-            - test
-          <<: *filters
+      # - migrate_db:
+      #     requires:
+      #       - checkout_code
+      #       - test
+      #     <<: *filters
       - dock_and_deploy:
-          type: approval
           requires:
             - checkout_code
             - test
             - build
-            - migrate_db
+            # - migrate_db
           <<: *filters

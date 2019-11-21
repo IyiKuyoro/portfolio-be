@@ -1,4 +1,4 @@
-#!/usr/bin/expect -f
+#!/bin/bash
 
 # This script logs into heroku
 set timeout -1
