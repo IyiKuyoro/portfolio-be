@@ -17,35 +17,15 @@ describe('ArticlesController', () => {
       json = jest.spyOn(res, 'json');
     });
 
-    it('should split the authors', async () => {
-      const req = {
-        body: {
-          title: 'title',
-          authors: 'author1, author2',
-          body: 'Body.',
-          category: 'tech',
-        },
-      };
-      jest.spyOn(ArticlesService, 'createArticle')
-        .mockImplementation(() => {
-          throw new Error('some error');
-        });
-
-      await ArticlesController.createArticle(req, res);
-
-      expect(req.authors).toEqual([
-        'author1',
-        'author2',
-      ]);
-    });
-
     it('should respond with the newly created article', async () => {
       const req = {
         body: {
           title: 'title',
-          authors: 'author1, author2',
           body: 'Body.',
           category: 'tech',
+        },
+        userData: {
+          id: 1,
         },
       };
       jest.spyOn(ArticlesService, 'createArticle')
@@ -55,15 +35,19 @@ describe('ArticlesController', () => {
           slug: 'title-xxx-xxx-xxx',
           body: 'Body.',
           link: null,
-          authors: 'author1, author2',
+          allAuthors: [{
+            firstName: 'author',
+            lastName: 'one',
+            id: 1,
+          }],
           category: 'tech',
           imageUrl: 'https://image.jpg',
+          imagePublicId: 'public-id',
           external: false,
         }));
 
       await ArticlesController.createArticle(req, res);
 
-      expect(status).toHaveBeenCalledWith(201);
       expect(json).toHaveBeenCalledWith({
         success: true,
         message: 'Article saved successfully',
@@ -73,12 +57,15 @@ describe('ArticlesController', () => {
           slug: 'title-xxx-xxx-xxx',
           body: 'Body.',
           link: null,
-          authors: 'author1, author2',
+          authors: ['author one'],
+          authorsIds: [1],
           category: 'tech',
           imageUrl: 'https://image.jpg',
+          imagePublicId: 'public-id',
           external: false,
         },
       });
+      expect(status).toHaveBeenCalledWith(201);
     });
 
     it('should respond with server error if one occurs', async () => {
@@ -245,18 +232,24 @@ describe('ArticlesController', () => {
       jest.spyOn(ArticlesService, 'findBySlug')
         .mockImplementation(() => ({
           title: 'title',
+          uuid: 'xxx-xxx-xxx',
+          slug: 'title-xxx-xxx-xxx',
+          body: 'Body.',
+          link: null,
+          allAuthors: [{
+            firstName: 'author',
+            lastName: 'one',
+            id: 1,
+          }],
+          category: 'tech',
+          imageUrl: 'https://image.jpg',
+          imagePublicId: 'public-id',
+          external: false,
         }));
 
       await ArticlesController.getArticle(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({
-        success: true,
-        message: 'Article found',
-        data: {
-          title: 'title',
-        },
-      });
     });
   });
 
