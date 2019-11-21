@@ -27,7 +27,6 @@ describe('ArticlesMiddleware', () => {
         message: 'Incomplete request params',
         possibleCauses: [
           'title not provided',
-          'authors not provided',
           'category not provided',
           'body or link not both should be provided',
         ],
@@ -51,7 +50,6 @@ describe('ArticlesMiddleware', () => {
         message: 'Incomplete request params',
         possibleCauses: [
           'title not provided',
-          'authors not provided',
           'category not provided',
           'body or link not both should be provided',
         ],
@@ -110,6 +108,7 @@ describe('ArticlesMiddleware', () => {
           body: '!body-',
           category: 'user',
           imageUrl: 'someWrongLink',
+          imagePublicId: 'publicId',
         },
       };
       const next = jest.fn();
@@ -122,7 +121,6 @@ describe('ArticlesMiddleware', () => {
         message: 'Invalid parameters',
         possibleCauses: [
           'Titles can only contain the following dataset: [ a-zA-Z0-9:!-]',
-          'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
           'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
           'Link must be a valid url',
         ],
@@ -133,7 +131,6 @@ describe('ArticlesMiddleware', () => {
       const req = {
         body: {
           title: '=*abdhu:',
-          authors: ':*!',
           category: 'user',
           link: 'someWrongLink',
         },
@@ -148,7 +145,6 @@ describe('ArticlesMiddleware', () => {
         message: 'Invalid parameters',
         possibleCauses: [
           'Titles can only contain the following dataset: [ a-zA-Z0-9:!-]',
-          'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
           'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
           'Link must be a valid url',
         ],

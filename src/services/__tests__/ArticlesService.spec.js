@@ -1,10 +1,14 @@
 import model from '../../database/models';
 import ArticlesService from '../ArticlesService';
+import ArticleAuthorService from '../ArticleAuthorService';
 import logger from '../../logger';
 
 const { Article } = model;
 
 describe('ArticlesService', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
   describe('createArticle()', () => {
     it('should throw an error if one occurs.', async (done) => {
       try {
@@ -29,10 +33,20 @@ describe('ArticlesService', () => {
         .mockImplementation(() => ({
           article: 'stuffStuff',
         }));
+      jest.spyOn(Article, 'create')
+        .mockImplementation(() => ({
+          id: '1',
+        }));
+      jest.spyOn(ArticleAuthorService, 'createArticleAuthor')
+        .mockImplementation(() => ({}));
+      jest.spyOn(ArticlesService, 'findBySlug')
+        .mockImplementation(() => ({
+          article: 'stuffStuff',
+        }));
 
       const article = await ArticlesService.createArticle({
         title: 'title',
-        author: 'author',
+        authorId: 'author',
         category: 'tech',
       });
 
