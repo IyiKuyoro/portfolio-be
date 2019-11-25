@@ -9,17 +9,20 @@ import logger from '../logger';
 export default class ArticlesController {
   static async createArticle(req, res) {
     try {
-      req.authors = req.body.authors.split(', ');
-
       const article = await ArticlesService.createArticle({
         title: req.body.title,
-        authors: req.authors,
         category: req.body.category,
         imageUrl: req.body.imageUrl,
+        imagePublicId: req.body.imagePublicId,
         link: req.body.link,
         body: req.body.body,
         external: req.body.external,
+        allAuthors: req.userData.id,
+        authorId: req.userData.id,
       });
+
+      const authors = article.allAuthors.map(authorData => `${authorData.firstName} ${authorData.lastName}`);
+      const authorsIds = article.allAuthors.map(authorData => authorData.id);
 
       RespondEx.createdResource(
         'Article saved successfully',
@@ -29,10 +32,12 @@ export default class ArticlesController {
           slug: article.slug,
           body: article.body,
           link: article.link,
-          authors: article.authors,
+          authors,
+          authorsIds,
           category: article.category,
           imageUrl: article.imageUrl,
           external: article.external,
+          imagePublicId: article.imagePublicId,
         },
         `${config.URL}/api/v1/articles/${article.slug}`,
         res,
@@ -90,17 +95,22 @@ export default class ArticlesController {
         );
       }
 
+      const authors = article.allAuthors.map(authorData => `${authorData.firstName} ${authorData.lastName}`);
+      const authorsIds = article.allAuthors.map(authorData => authorData.id);
+
       const data = {
         title: article.title,
-        authors: article.authors,
         category: article.category,
         body: article.body,
         link: article.link,
         slug: article.slug,
         external: article.external,
         imageUrl: article.imageUrl,
+        imagePublicId: article.imagePublicId,
         createdAt: article.createdAt,
         updatedAt: article.updatedAt,
+        authors,
+        authorsIds,
       };
 
       RespondEx.successWithData(
@@ -127,6 +137,7 @@ export default class ArticlesController {
           link: updateArticle.link,
           external: updateArticle.external,
           imageUrl: updateArticle.imageUrl,
+          imagePublicId: updateArticle.imagePublicId,
           createdAt: updateArticle.createdAt,
           updatedAt: updateArticle.updatedAt,
         },

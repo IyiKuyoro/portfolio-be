@@ -1,10 +1,11 @@
 import uuidv1 from 'uuid/v1';
 import ApiError from '@respondex/apierror';
 
+import ArticleAuthorService from './ArticleAuthorService';
 import logger from '../logger';
 import model from '../database/models';
 
-const { Article } = model;
+const { Article, User } = model;
 
 export default class ArticlesService {
   static async createArticle(articleParams) {
@@ -15,16 +16,22 @@ export default class ArticlesService {
       const articleRecord = await Article.create({
         uuid,
         title: articleParams.title,
-        authors: articleParams.authors,
         category: articleParams.category,
         slug: `${hyphenatedName}-${uuid}`,
         imageUrl: articleParams.imageUrl || null,
+        imagePublicId: articleParams.imagePublicId || null,
         link: articleParams.link || null,
         body: articleParams.body || null,
         external: !articleParams.body,
       });
 
-      return articleRecord;
+      await ArticleAuthorService.createArticleAuthor({
+        articleId: articleRecord.id,
+        authorId: articleParams.authorId,
+      });
+
+      const article = await ArticlesService.findBySlug(articleRecord.slug);
+      return article;
     } catch (error) {
       logger.log('error', error.message, error);
       throw error;
@@ -38,7 +45,7 @@ export default class ArticlesService {
         limit: count,
         offset: (count * (page - 1)),
         order: [['id', 'DESC']],
-        attributes: ['id', 'title', 'slug', 'category', 'authors', 'imageUrl', 'link', 'external', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'title', 'slug', 'category', 'imageUrl', 'link', 'external', 'createdAt', 'updatedAt'],
       });
     } catch (error) {
       logger.log('error', error.message, error);
@@ -52,6 +59,11 @@ export default class ArticlesService {
         where: {
           slug,
         },
+        include: [{
+          model: User,
+          attributes: ['id', 'firstName', 'lastName'],
+          as: 'allAuthors',
+        }],
       });
     } catch (error) {
       logger.log('error', error.message, error);

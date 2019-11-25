@@ -113,7 +113,6 @@ describe('CreateArticle', () => {
         message: 'Incomplete request params',
         possibleCauses: [
           'title not provided',
-          'authors not provided',
           'category not provided',
           'body or link not both should be provided',
         ],
@@ -138,7 +137,6 @@ describe('CreateArticle', () => {
         message: 'Invalid parameters',
         possibleCauses: [
           'Titles can only contain the following dataset: [ a-zA-Z0-9:!-]',
-          'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
           'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
           'Link must be a valid url',
         ],
@@ -162,7 +160,6 @@ describe('CreateArticle', () => {
         success: false,
         message: 'Invalid parameters',
         possibleCauses: [
-          'Authors can only contain the following dataset: [ a-zA-Z\'-,]',
           'Category only be one of the following [\'tech\', \'inspirational\', \'others\']',
           'Link must be a valid url',
         ],

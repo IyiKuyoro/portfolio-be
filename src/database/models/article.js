@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
     },
-    authors: {
-      allowNull: false,
-      type: DataTypes.ARRAY(DataTypes.STRING),
-    },
     category: {
       allowNull: false,
       type: DataTypes.ENUM,
@@ -30,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'tech',
     },
     imageUrl: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    imagePublicId: {
       allowNull: true,
       type: DataTypes.STRING,
     },
@@ -46,8 +46,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
     },
   }, {});
-  Article.associate = () => {
-    // associations can be defined here
+  Article.associate = (models) => {
+    Article.belongsToMany(models.User,
+      {
+        as: 'allAuthors',
+        through: 'ArticleAuthor',
+        foreignKey: 'articleId',
+      });
   };
   return Article;
 };
