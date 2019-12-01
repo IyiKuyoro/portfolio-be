@@ -4,6 +4,7 @@ import ApiError from '@respondex/apierror';
 import ArticleAuthorService from './ArticleAuthorService';
 import logger from '../logger';
 import model from '../database/models';
+import RedisClient from '../helpers/RedisClient';
 
 const { Article, User } = model;
 
@@ -55,7 +56,14 @@ export default class ArticlesService {
 
   static async findBySlug(slug) {
     try {
-      return Article.findOne({
+      const redisKey = `article:${slug}`;
+
+      const data = await RedisClient.getAsync(redisKey);
+
+      if (data) {
+        return JSON.parse(data);
+      }
+      const article = await Article.findOne({
         where: {
           slug,
         },
@@ -65,6 +73,10 @@ export default class ArticlesService {
           as: 'allAuthors',
         }],
       });
+
+      RedisClient.set(redisKey, JSON.stringify(article));
+
+      return article;
     } catch (error) {
       logger.log('error', error.message, error);
       throw error;
@@ -73,6 +85,8 @@ export default class ArticlesService {
 
   static async updateArticle(slug, data) {
     try {
+      const redisKey = `article:${slug}`;
+      RedisClient.del(redisKey);
       const updatedArticle = await Article.update(
         {
           ...data,
@@ -106,6 +120,7 @@ export default class ArticlesService {
 
   static async deleteArticle(slug) {
     try {
+      RedisClient.del(`article:${slug}`);
       const article = await ArticlesService.findBySlug(slug);
 
       if (article === null) {
