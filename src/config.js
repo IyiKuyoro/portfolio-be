@@ -9,9 +9,9 @@ const config = () => {
     case 'test': {
       return {
         PORT: process.env.PORT,
-        SA_EMAIL: process.env.SA_EMAIL,
-        SA_PASSWORD: process.env.SA_PASSWORD,
-        SA_USERNAME: process.env.SA_USERNAME,
+        SA_EMAIL: 'user@test.com',
+        SA_PASSWORD: 'password',
+        SA_USERNAME: 'testuser',
         SECRET: process.env.SECRET,
         URL: process.env.URL,
         TWITTER_API_ID: process.env.TWITTER_API_ID,

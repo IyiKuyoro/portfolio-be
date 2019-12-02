@@ -14,7 +14,8 @@
     "rollmigrate": "npm run rollback && npm run migrate && npm run seed",
     "seed": "sequelize db:seed:all",
     "start": "NODE_ENV=production npm run migrate && NODE_ENV=production node ./bin/prod",
-    "test": "NODE_ENV=test npm run lint && NODE_ENV=test npm run rollback && NODE_ENV=test npm run migrate && NODE_ENV=test jest --detectOpenHandles"
+    "test": "NODE_ENV=test npm run lint && NODE_ENV=test npm run rollback && NODE_ENV=test npm run migrate && NODE_ENV=test jest --detectOpenHandles",
+    "test:server": "export NODE_ENV=test && npm run rollmigrate && npm run build && node ./bin/prod"
   },
   "repository": {
     "type": "git",
