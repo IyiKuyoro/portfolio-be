@@ -2,7 +2,6 @@ const uuidv4 = require('uuid/v4');
 
 module.exports = {
   up: queryInterface => queryInterface.bulkInsert('Articles', [{
-    id: 1,
     uuid: uuidv4(),
     title: 'Demo Article 1',
     slug: 'demo-article-1-1234',
@@ -27,7 +26,6 @@ module.exports = {
     createdAt: new Date(),
     updatedAt: new Date(),
   }, {
-    id: 2,
     uuid: uuidv4(),
     title: 'Demo Article 2',
     slug: 'demo-article-2-12345',
