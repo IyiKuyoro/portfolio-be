@@ -46,7 +46,7 @@
     "@respondex/apierror": "^0.0.1",
     "@respondex/core": "^0.1.1",
     "axios": "^0.19.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",
     "cloudinary": "^1.16.0",
     "cors": "^2.8.5",
