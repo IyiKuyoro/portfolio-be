@@ -45,7 +45,7 @@
     "@babel/preset-env": "^7.4.3",
     "@respondex/apierror": "^0.0.1",
     "@respondex/core": "^0.1.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcrypt": "^3.0.6",
     "bluebird": "^3.7.2",
     "cloudinary": "^1.16.0",
